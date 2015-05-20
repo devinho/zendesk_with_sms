@@ -3,7 +3,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import urlparse
 
-ADDR = "localhost"
+ADDR = "45.55.212.169" #45.55.212.169
 PORT = 8000
 
 class RequestHandler(BaseHTTPRequestHandler):        
@@ -26,6 +26,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         s.wfile.write("<body>")
         for key, value in post_data.iteritems():
     		s.wfile.write("<p>%s=%s</p>"  % (key, value))
+    		print "%s=%s , " % (key, value)
 
         s.wfile.write("</body>")
 

@@ -25,8 +25,9 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         s.wfile.write("<body>")
         for key, value in post_data.iteritems():
-    		s.wfile.write("<p>%s=%s</p>"  % (key, value))
-    		print "%s=%s , " % (key, value)
+        	if key == "body":
+    			s.wfile.write("<p>%s=%s</p>"  % (key, value))
+    			print "%s=%s , " % (key, value)
 
         s.wfile.write("</body>")
 

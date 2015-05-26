@@ -57,7 +57,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             remainder = ''
         else:
             command = body[0:position]
-            remainder = body[position:len(value)]
+            remainder = body[position:len(body)]
 
         if command == 'menu':
             print '\nThe available commands are:\r\n'

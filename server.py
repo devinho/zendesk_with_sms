@@ -70,8 +70,10 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         q = urlparse.parse_qs(urlparse.urlparse(s.path).query)
         print q['to'][0]
-        print q['Body'][0]
-        #To, Body
+        print q['Body'][0] + '\n\n ----------------------------------------------'
+        # To, Body
+
+        sendText(q['to'][0], q['Body'][0] + '\n\n ----------------------------------------------')
 
         s.send_response(200)
         s.send_header('Content-type', 'text/html')

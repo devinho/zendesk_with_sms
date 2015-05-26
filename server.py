@@ -53,16 +53,17 @@ def updateTicket(ticket, comment, phone):
     
     if r.status_code != 200:
         print ('Ticket not found')
+        sendText(phone, 'We could not find your ticket with ID '+ str(ticket) +'. Are you sure that\'s the right ID?')
     else:
         data = {'ticket': {'comment': {'body': comment}}}
         payload = json.dumps(data)
         r2 = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
         if r2.status_code != 200:
             print('Status:', response.status_code, 'Problem with the request.')
-            sendText(phone, 'We could not find your ticket with ID '+ str(ticket) +'. Are you sure that\'s the right ID?')
+            sendText(phone, 'We could not add your comment to ticket ('+ str(ticket) +').')
         else:
             print('Successfully added comment to ticket')
-            sendText(phone, 'Your ticket('+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
+            sendText(phone, 'Your ticket ('+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
 
 class RequestHandler(BaseHTTPRequestHandler):        
     def do_GET(s):

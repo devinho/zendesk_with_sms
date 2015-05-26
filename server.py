@@ -67,9 +67,8 @@ def updateTicket(ticket, comment, phone):
 
 class RequestHandler(BaseHTTPRequestHandler):        
     def do_GET(s):
-        par = urlparse.parse_qs(urlparse.urlparse(url).query)
-
-        print par['From']
+        query_components = parse_qs(urlparse(self.path).query)
+        print query_components
 
         s.send_response(200)
         s.send_header('Content-type', 'text/html')

@@ -1,7 +1,7 @@
 # phone field id for zendesk = 25897847
 
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
-import urlparse
+from urlparse import urlparse, parse_qs
 import json
 import requests
 from twilio.rest import TwilioRestClient 

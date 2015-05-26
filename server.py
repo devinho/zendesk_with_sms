@@ -6,7 +6,7 @@ import json
 import requests
 from twilio.rest import TwilioRestClient 
 
-ADDR = '45.55.212.169' #45.55.212.169
+ADDR = 'localhost' #45.55.212.169
 PORT = 8000
 
 def sendText(phone, message):
@@ -67,8 +67,14 @@ def updateTicket(ticket, comment, phone):
 
 class RequestHandler(BaseHTTPRequestHandler):        
     def do_GET(s):
-        query_components = parse_qs(urlparse(self.path).query)
-        print query_components
+
+        q = parse_qs(urlparse(s.path).query)
+        print q['to']
+        #To, Body
+
+        print q['test']
+        print q['value']
+
 
         s.send_response(200)
         s.send_header('Content-type', 'text/html')

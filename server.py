@@ -41,7 +41,7 @@ def createTicket(subject, phone):
     else:
         iD = r.json()['ticket']['id']
         print('Successfully created the ticket.')
-        sendText(phone, 'A new ticket has been created. To add a comment, reply with command: "' + str(ticket) + ' [message]"');
+        sendText(phone, 'A new ticket has been created. To add a comment, reply with command: "' + str(iD) + ' [message]"');
         return iD
 
 def updateTicket(ticket, comment, phone):

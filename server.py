@@ -72,10 +72,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         print q['to']
         #To, Body
 
-        print q['test']
-        print q['value']
-
-
         s.send_response(200)
         s.send_header('Content-type', 'text/html')
         s.end_headers()

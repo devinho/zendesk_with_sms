@@ -70,6 +70,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         q = parse_qs(urlparse(s.path).query)
         print q['to']
+        print q['Body']
         #To, Body
 
         s.send_response(200)

@@ -9,6 +9,18 @@ from twilio.rest import TwilioRestClient
 ADDR = '45.55.212.169' #45.55.212.169
 PORT = 8000
 
+def sendText(phone, message):
+    ACCOUNT_SID = "AC259e229cc7f22e3922ba82ae2fff1232" 
+    AUTH_TOKEN = "58c17f647492900c6a9701739387ee5c" 
+
+    client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
+ 
+    client.messages.create(
+        to = phone, 
+        from_ = '+16504698204',   
+        body = message,
+    )
+
 def createTicket(subject, phone):
     subject = subject
     body = subject
@@ -24,25 +36,15 @@ def createTicket(subject, phone):
     r = requests.post(url, data=payload, auth=(user,pwd), headers=headers)
 
     if r.status_code != 201:
-        print('Status:', r.status_code, 'Problem with the request. Exiting.') 
-        exit()   
+        print('Status:', r.status_code, 'Problem with the request.') 
+        sendText(phone, 'Something went wrong. Your ticket was not created.')
     else:
+        iD = r.json()['ticket']['id']
         print('Successfully created the ticket.')
-        return r.json()['ticket']['id']
+        sendText(phone, 'A new ticket has been created. To add a comment, reply with command: "' + str(ticket) + ' [message]"');
+        return iD
 
-def sendText(phone, ticket):
-    ACCOUNT_SID = "AC259e229cc7f22e3922ba82ae2fff1232" 
-    AUTH_TOKEN = "58c17f647492900c6a9701739387ee5c" 
-
-    client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
- 
-    client.messages.create(
-        to = phone, 
-        from_ = '+16504698204',   
-        body = 'A new ticket has been created. To update, reply with command: "' + str(ticket) + ' [message]"',
-    )
-
-def updateTicket(ticket, comment):
+def updateTicket(ticket, comment, phone):
     url = 'https://curbsidehelp.zendesk.com/api/v2/tickets/' + str(ticket) + '.json'
     user = 'ho.devin05@gmail.com'
     pwd = '7ib18a8erhh'
@@ -56,10 +58,11 @@ def updateTicket(ticket, comment):
         payload = json.dumps(data)
         r2 = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
         if r2.status_code != 200:
-            print('Status:', response.status_code, 'Problem with the request. Exiting.')
-            exit()
+            print('Status:', response.status_code, 'Problem with the request.')
+            sendText(phone, 'We could not find your ticket with ID '+ str(ticket) +'. Are you sure that\'s the right ID?')
         else:
             print('Successfully added comment to ticket')
+            sendText(phone, 'Your ticket('+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
 
 class RequestHandler(BaseHTTPRequestHandler):        
     def do_GET(s):
@@ -93,15 +96,16 @@ class RequestHandler(BaseHTTPRequestHandler):
             remainder = body[position+1:len(body)]
 
         if command == 'menu':
-            print '\nThe available commands are:\n'
-            print 'new - create a new ticket'
-            print '[id] - update this ticket ID'
-            print 'menu - show this menu\n'
+            message = '\nThe available commands are:\nnew - create a new ticket\n[id] - update this ticket ID\nmenu - show this menu\n'
+            print message
+            # print '\nThe available commands are:\n'
+            # print 'new - create a new ticket'
+            # print '[id] - update this ticket ID'
+            # print 'menu - show this menu\n'
         elif command == 'new':
             ticket = createTicket(remainder, phone)
-            sendText(phone, ticket);
         elif command.isdigit():
-            updateTicket(command, remainder)
+            updateTicket(command, remainder, phone)
         else:
             print '\nHello and thanks for the message.'
             print 'Unfortunately I did not quite understand what you needed.'

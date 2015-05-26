@@ -67,6 +67,10 @@ def updateTicket(ticket, comment, phone):
 
 class RequestHandler(BaseHTTPRequestHandler):        
     def do_GET(s):
+        par = urlparse.parse_qs(urlparse.urlparse(url).query)
+
+        print par['From']
+
         s.send_response(200)
         s.send_header('Content-type', 'text/html')
         s.end_headers()
@@ -75,7 +79,6 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(s):
     	length = int(s.headers['Content-Length'])
     	post_data = urlparse.parse_qs(s.rfile.read(length).decode('utf-8'))
-
 
 
     	s.send_response(200)

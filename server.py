@@ -46,34 +46,37 @@ class RequestHandler(BaseHTTPRequestHandler):
         s.end_headers()
 
         s.wfile.write('<body> <p>Success</p>')
-        for key, value in post_data.iteritems():
-        	if key == 'Body':
-        		body = ''.join(value).encode('ascii', 'ignore')
 
-        		position = body.find(' ')
+        body = ''.join(post_data[u'Body'][0]).encode('ascii', 'ignore')
+        phone = ''.join(post_data['From'][0]).encode('ascii', 'ignore')
 
-        		if position == -1:
-        			command = body
-        		else:
-        			command = body[0:position]
-        			remainder = body[position:len(value)]
+        position = body.find(' ')
 
-                if command == 'menu':
-                    print '\nThe available commands are:\r\n'
-                    print 'new - create a new ticket\r'
-                    print '[id] - update this ticket ID\r'
-                    print 'menu - show this menu\r\n'
-                elif command == 'new':
-                    #createTicket(remainder)
-                    print post_data
-                elif command.isdigit():
-                    print 'isdigit'
-                else:
-                    print '\nHello and thanks for the message.\r'
-                    print 'Unfortunately I did not quite understand what you needed.\r'
-                    print 'Try sending the word "menu" for the list of commands.\r\n'
-                # s.wfile.write('<p>%s=%s</p>'  % (key, value))
-                # print '%s=%s , ' % (key, value)
+        if position == -1:
+            command = body
+            remainder = ''
+        else:
+            command = body[0:position]
+            remainder = body[position:len(value)]
+
+        if command == 'menu':
+            print '\nThe available commands are:\r\n'
+            print 'new - create a new ticket\r'
+            print '[id] - update this ticket ID\r'
+            print 'menu - show this menu\r\n'
+        elif command == 'new':
+            #createTicket(remainder)
+            print phone
+        elif command.isdigit():
+            print 'isdigit'
+        else:
+            print '\nHello and thanks for the message.\r'
+            print 'Unfortunately I did not quite understand what you needed.\r'
+            print 'Try sending the word "menu" for the list of commands.\r\n'
+        # s.wfile.write('<p>%s=%s</p>'  % (key, value))
+        # print '%s=%s , ' % (key, value)
+
+
         s.wfile.write('</body>')
 
 

@@ -1,7 +1,7 @@
 # phone field id for zendesk = 25897847
 
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
-from urlparse import urlparse, parse_qs
+import urlparse
 import json
 import requests
 from twilio.rest import TwilioRestClient 
@@ -68,7 +68,7 @@ def updateTicket(ticket, comment, phone):
 class RequestHandler(BaseHTTPRequestHandler):        
     def do_GET(s):
 
-        q = parse_qs(urlparse(s.path).query)
+        q = urlparse.parse_qs(urlparse(s.path).query)
         print q['to']
         print q['Body']
         #To, Body

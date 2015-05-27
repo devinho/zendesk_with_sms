@@ -56,7 +56,7 @@ def create_ticket(subject, phone):
     else:
         ticket_id = r.json()['ticket']['id']
         print('Successfully created the ticket.')
-        send_text(phone, 'A new ticket has been created (id = ' + str(iD) + '). To add a comment, just send another text message.');
+        send_text(phone, 'A new ticket has been created (id = ' + str(ticket_id) + '). To add a comment, just send another text message.');
         return ticket_id
 
 # update an existing zendesk ticket (text message is received from a number that already has an existing ticket open)

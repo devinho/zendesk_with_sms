@@ -7,7 +7,7 @@ import requests
 from twilio.rest import TwilioRestClient 
 import os
 
-ADDR = '45.55.212.169' #45.55.212.169
+ADDR = 'localhost' #45.55.212.169
 PORT = 8000
 
 def sendText(phone, message):

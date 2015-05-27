@@ -5,9 +5,15 @@ import requests
 from twilio.rest import TwilioRestClient 
 import os
 
+# future work/things to consider:
+# 1. notififying user of comment on their ticket needs work 
+# 2. how to incorporate name of user?
+# 3. are ticket statuses needed (open, pending, closed)?
+# 4. would the menu system be better?
+
 requests.packages.urllib3.disable_warnings()
 
-ADDR = 'localhost' #45.55.212.169
+ADDR = '45.55.212.169' #45.55.212.169
 PORT = 8000
 
 # zendesk login credentials
@@ -84,7 +90,7 @@ def update_ticket(ticket, comment, phone):
             send_text(phone, 'We could not add your comment to ticket ('+ str(ticket) +').')
         else:
             print('Successfully added comment to ticket')
-            send_text(phone, 'Your ticket ('+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
+            send_text(phone, 'Your ticket (id = '+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
 
 # return ticket id for given phone number. if it doesn't exist return -1
 # phone = phone number to search a ticket for

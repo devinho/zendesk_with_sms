@@ -121,7 +121,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         s.send_header('Content-type', 'text/html')
         s.end_headers()
 
-        s.wfile.write('<body> <p>Success</p>')
+        s.wfile.write('<body> <p>Success</p> </body>')
 
 
         # 'Body' and 'From' are required to create/update a ticket
@@ -164,8 +164,6 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         # s.wfile.write('<p>%s=%s</p>'  % (key, value))
         # print '%s=%s , ' % (key, value)
-
-        s.wfile.write('</body>')
 
 httpd = HTTPServer((ADDR, PORT), RequestHandler)
 httpd.serve_forever()

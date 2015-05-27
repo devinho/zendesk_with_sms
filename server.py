@@ -33,7 +33,9 @@ def createTicket(subject, phone):
     user = os.getenv('email')
     pwd = os.getenv('pass')
     headers = {'content-type': 'application/json'}
-
+    
+    print user
+    print pwd
     r = requests.post(url, data=payload, auth=(user,pwd), headers=headers)
 
     if r.status_code != 201:
@@ -71,7 +73,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         q = urlparse.parse_qs(urlparse.urlparse(s.path).query)
 
-        sendText(q['to'][0], q['Body'][0] + '\n\n ----------------------------------------------')
+        sendText(q['to'][0],'\n' + q['Body'][0] + '\n')
 
         s.send_response(200)
         s.send_header('Content-type', 'text/html')

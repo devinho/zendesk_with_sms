@@ -5,8 +5,9 @@ import urlparse
 import json
 import requests
 from twilio.rest import TwilioRestClient 
+import os
 
-ADDR = '45.55.212.169' #45.55.212.169
+ADDR = 'localhost' #45.55.212.169
 PORT = 8000
 
 def sendText(phone, message):
@@ -46,8 +47,8 @@ def createTicket(subject, phone):
 
 def updateTicket(ticket, comment, phone):
     url = 'https://curbsidehelp.zendesk.com/api/v2/tickets/' + str(ticket) + '.json'
-    user = 'ho.devin05@gmail.com'
-    pwd = '7ib18a8erhh'
+    user = os.getenv('email')
+    pwd = os.getenv('pass')
     headers = {'content-type': 'application/json'}
     r = requests.get(url, auth=(user,pwd))
     
@@ -65,7 +66,7 @@ def updateTicket(ticket, comment, phone):
             print('Successfully added comment to ticket')
             sendText(phone, 'Your ticket ('+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
 
-class RequestHandler(BaseHTTPRequestHandler):        
+class RequestHandler(BaseHTTPRequestHandler):   
     def do_GET(s):
 
         q = urlparse.parse_qs(urlparse.urlparse(s.path).query)

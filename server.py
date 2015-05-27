@@ -10,21 +10,31 @@ import os
 ADDR = 'localhost' #45.55.212.169
 PORT = 8000
 
-# zendesk login
+# zendesk login credentials
+
 user = os.getenv('email')
 pwd = os.getenv('pass')
+zendesk_url = 'https://curbsidehelp.zendesk.com'
 
 def send_text(phone, message):
+
+    # twilio authentication 
+
     ACCOUNT_SID = "AC259e229cc7f22e3922ba82ae2fff1232" 
     AUTH_TOKEN = "58c17f647492900c6a9701739387ee5c" 
 
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
  
+    # send text message
     client.messages.create(
         to = phone, 
         from_ = '+16504698204',   
         body = message,
     )
+
+# create a zendesk ticket (called when text message is sent -> invokes post)
+# subject = body of ticket
+# phone = phone number that sent text message
 
 def create_ticket(subject, phone):
     subject = subject
@@ -33,23 +43,25 @@ def create_ticket(subject, phone):
 
     payload = json.dumps(data)
 
-    url = 'https://curbsidehelp.zendesk.com/api/v2/tickets.json'
+    url = zendesk_url + '/api/v2/tickets.json'
 
     headers = {'content-type': 'application/json'}
     
     r = requests.post(url, data=payload, auth=(user,pwd), headers=headers)
 
+    # if for some reason posting new ticket to zendesk does not work
+
     if r.status_code != 201:
         print('Status:', r.status_code, 'Problem with the request.') 
         send_text(phone, 'Something went wrong. Your ticket was not created.')
     else:
-        iD = r.json()['ticket']['id']
+        ticket_id = r.json()['ticket']['id']
         print('Successfully created the ticket.')
-        send_text(phone, 'A new ticket has been created. To add a comment, reply with command: "' + str(iD) + ' [message]"');
-        return iD
+        send_text(phone, 'A new ticket has been created (id = ' + str(iD) + '). To add a comment, just send another text message.');
+        return ticket_id
 
 def update_ticket(ticket, comment, phone):
-    url = 'https://curbsidehelp.zendesk.com/api/v2/tickets/' + str(ticket) + '.json'
+    url = zendesk_url + '/api/v2/tickets/' + str(ticket) + '.json'
 
     headers = {'content-type': 'application/json'}
     r = requests.get(url, auth=(user,pwd))
@@ -71,7 +83,7 @@ def update_ticket(ticket, comment, phone):
 #return ticket id for given phone number. if it doesn't exist return -1
 def find_ticket(phone):
     ticket_id = -1
-    url = 'https://curbsidehelp.zendesk.com/api/v2/tickets.json'
+    url = zendesk_url + '/api/v2/tickets.json'
     headers = {'Accept':'application/json'}
     r = requests.get(url, auth=(user,pwd), headers=headers)
     for ticket in r.json()['tickets']:

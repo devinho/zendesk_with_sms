@@ -1,5 +1,3 @@
-# phone field id for zendesk = 25897847
-
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import urlparse
 import json
@@ -11,10 +9,10 @@ ADDR = 'localhost' #45.55.212.169
 PORT = 8000
 
 # zendesk login credentials
-
 user = os.getenv('email')
 pwd = os.getenv('pass')
 zendesk_url = 'https://curbsidehelp.zendesk.com'
+phone_field_id = 25897847  # field id for custom field in zen desk
 
 def send_text(phone, message):
 
@@ -22,24 +20,25 @@ def send_text(phone, message):
 
     ACCOUNT_SID = "AC259e229cc7f22e3922ba82ae2fff1232" 
     AUTH_TOKEN = "58c17f647492900c6a9701739387ee5c" 
+    twilio_phone = '+16504698204'
 
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
  
     # send text message
     client.messages.create(
         to = phone, 
-        from_ = '+16504698204',   
+        from_ = twilio_phone,
         body = message,
     )
 
-# create a zendesk ticket (called when text message is sent -> invokes post)
+# create a zendesk ticket (called when text message is sent from a phone number that doesn't have an existing ticket) 
 # subject = body of ticket
 # phone = phone number that sent text message
 
 def create_ticket(subject, phone):
     subject = subject
     body = subject
-    data = {'ticket': {'subject': subject, 'comment':{'body': body}, 'fields': {'25897847': phone}}}
+    data = {'ticket': {'subject': subject, 'comment':{'body': body}, 'fields': {phone_field_id: phone}}}
 
     payload = json.dumps(data)
 
@@ -60,6 +59,11 @@ def create_ticket(subject, phone):
         send_text(phone, 'A new ticket has been created (id = ' + str(iD) + '). To add a comment, just send another text message.');
         return ticket_id
 
+# update an existing zendesk ticket (text message is received from a number that already has an existing ticket open)
+# ticket = ticket id
+# comment = text of comment
+# phone = phone number that the ticket belongs to
+
 def update_ticket(ticket, comment, phone):
     url = zendesk_url + '/api/v2/tickets/' + str(ticket) + '.json'
 
@@ -68,7 +72,7 @@ def update_ticket(ticket, comment, phone):
     
     if r.status_code != 200:
         print ('Ticket not found')
-        send_text(phone, 'We could not find your ticket with ID '+ str(ticket) +'. Are you sure that\'s the right ID?')
+        send_text(phone, 'We could not find your ticket.') # This should never happen (ticket is created if ticket not found)
     else:
         data = {'ticket': {'comment': {'body': comment}}}
         payload = json.dumps(data)
@@ -80,7 +84,9 @@ def update_ticket(ticket, comment, phone):
             print('Successfully added comment to ticket')
             send_text(phone, 'Your ticket ('+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
 
-#return ticket id for given phone number. if it doesn't exist return -1
+# return ticket id for given phone number. if it doesn't exist return -1
+# phone = phone number to search a ticket for
+
 def find_ticket(phone):
     ticket_id = -1
     url = zendesk_url + '/api/v2/tickets.json'
@@ -95,7 +101,7 @@ def find_ticket(phone):
 
 class RequestHandler(BaseHTTPRequestHandler):   
     def do_GET(s):
-        #work around for sending text when comment is posted
+        #work around for sending text when comment is posted to existing ticket
         q = urlparse.parse_qs(urlparse.urlparse(s.path).query)
 
         send_text(q['to'][0],'\n' + q['Body'][0] + '\n')
@@ -158,7 +164,6 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         # s.wfile.write('<p>%s=%s</p>'  % (key, value))
         # print '%s=%s , ' % (key, value)
-
 
         s.wfile.write('</body>')
 

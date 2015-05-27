@@ -5,6 +5,8 @@ import requests
 from twilio.rest import TwilioRestClient 
 import os
 
+requests.packages.urllib3.disable_warnings()
+
 ADDR = 'localhost' #45.55.212.169
 PORT = 8000
 

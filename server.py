@@ -30,8 +30,8 @@ def createTicket(subject, phone):
     payload = json.dumps(data)
 
     url = 'https://curbsidehelp.zendesk.com/api/v2/tickets.json'
-    user = 'ho.devin05@gmail.com'
-    pwd = '7ib18a8erhh'
+    user = os.getenv('email')
+    pwd = os.getenv('pass')
     headers = {'content-type': 'application/json'}
 
     r = requests.post(url, data=payload, auth=(user,pwd), headers=headers)

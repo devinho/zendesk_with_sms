@@ -7,7 +7,7 @@ import requests
 from twilio.rest import TwilioRestClient 
 import os
 
-ADDR = 'localhost' #45.55.212.169
+ADDR = '45.55.212.169' #45.55.212.169
 PORT = 8000
 
 def sendText(phone, message):
@@ -70,9 +70,6 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(s):
 
         q = urlparse.parse_qs(urlparse.urlparse(s.path).query)
-        print q['to'][0]
-        print q['Body'][0] + '\n\n ----------------------------------------------'
-        # To, Body
 
         sendText(q['to'][0], q['Body'][0] + '\n\n ----------------------------------------------')
 
@@ -104,21 +101,17 @@ class RequestHandler(BaseHTTPRequestHandler):
             command = body[0:position]
             remainder = body[position+1:len(body)]
 
+
         if command == 'menu':
             message = '\nThe available commands are:\nnew - create a new ticket\n[id] - update this ticket ID\nmenu - show this menu\n'
-            print message
-            # print '\nThe available commands are:\n'
-            # print 'new - create a new ticket'
-            # print '[id] - update this ticket ID'
-            # print 'menu - show this menu\n'
+            sendText(phone, message)
         elif command == 'new':
             ticket = createTicket(remainder, phone)
         elif command.isdigit():
             updateTicket(command, remainder, phone)
         else:
-            print '\nHello and thanks for the message.'
-            print 'Unfortunately I did not quite understand what you needed.'
-            print 'Try sending the word "menu" for the list of commands.\n'
+            message = 'Hello and thanks for the message. Unfortunately I did not quite understand what you needed. Try sending the word "menu" for the list of commands.\n'
+            sendText(phone, message)
         # s.wfile.write('<p>%s=%s</p>'  % (key, value))
         # print '%s=%s , ' % (key, value)
 

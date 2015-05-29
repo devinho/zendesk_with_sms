@@ -25,7 +25,7 @@ phone_field_id = 25897847
 
 requests.packages.urllib3.disable_warnings()
 
-ADDR = 'localhost' #45.55.212.169
+ADDR = '45.55.212.169' #45.55.212.169
 PORT = 8000
 
 def send_text(phone, message):
@@ -115,10 +115,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         #work around for sending text when comment is posted to existing ticket
         q = urlparse.parse_qs(urlparse.urlparse(s.path).query)
 
-        if (q['to'][0] == ''):
-            print 'No phone'
-
-        send_text(q['to'][0],'\n' + q['Body'][0] + '\n')
+        try:
+            q['to'][0]
+        except KeyError:
+            print 'No text. No phone numer detected'
+        else:
+	    send_text(q['to'][0],'\n' + q['Body'][0] + '\n')
 
         s.send_response(200)
         s.send_header('Content-type', 'text/html')

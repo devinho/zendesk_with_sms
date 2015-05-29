@@ -148,4 +148,10 @@ The following need to go in config.py
 
 ``` python server.py ```
 
+Misc notes:
+
+- In Zendesk, the tickets will be created under the user the login credentials are for. This user only be used for creating tickets and assigning them. Only agents assigned to tickets can comment on them.
+- If you are using a trial Twilio account, you can only send texts to approved numbers.
+
+
 

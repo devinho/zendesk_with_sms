@@ -7,12 +7,12 @@ import os
 
 from settings import *
 
-
 # future work/things to consider:
 # 1. notififying user of comment on their ticket needs work 
 # 2. how to incorporate name of user?
-# 3. are ticket statuses needed (open, pending, closed)?
-# 4. would the menu system be better?
+# 3. would the menu system be better?
+# 4. are ticket statuses needed (open, pending, closed)?
+
 
 requests.packages.urllib3.disable_warnings()
 
@@ -23,7 +23,7 @@ def send_text(phone, message):
     # see settings.py
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
  
-    send text message
+    # send text message
     client.messages.create(
         to = phone, 
         from_ = twilio_phone,
@@ -136,7 +136,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     
         ticket_id = find_ticket(phone)
-        
+
         if ticket_id != -1:
             # if ticket already exists, append text to ticket
             update_ticket(ticket_id, body, phone)
@@ -168,9 +168,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         #     message = 'Hello and thanks for the message. Unfortunately I did not quite understand what you needed. Try sending the word "menu" for the list of commands.\n'
         #     send_text(phone, message)
 
-
-        # s.wfile.write('<p>%s=%s</p>'  % (key, value))
-        # print '%s=%s , ' % (key, value)
 
 httpd = HTTPServer((ADDR, PORT), RequestHandler)
 httpd.serve_forever()

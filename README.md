@@ -1,4 +1,4 @@
-# SMS with Zendesk #
+# SMS with Zendesk 
 
 When we receive a text:
 - search for a ticket for that phone number
@@ -9,7 +9,7 @@ Replies to that ticket from an agent would be received by sms by the customer (n
 
 To do this we will use Zendesk and Twilio
 
-How to configure Zendesk:
+# How to configure Zendesk:
 
 ## 1. Create phone field ##
 This field will hold customer's phone number
@@ -127,7 +127,7 @@ The steps and specs are as follows:
         >To add comments to your ticket, send additional text messages
 
 
-How to set up python server:
+# How to set up python server:
 
 ## Dependencies
 1. urlparse

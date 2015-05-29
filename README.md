@@ -71,7 +71,7 @@ The steps and specs are as follows:
     - Other: Current user / Is not / [admin that creates the tickets]
     - Ticket: Status / Is not / Solved
   - Perform these actions: 
-    - Notifications: Notify Target / Twilio Notification (<- the target we just created!)
+    - Notifications: Notify Target / Twilio Notification <- the target we just created!
     - Message :
       >New comment from Agent {{ticket.latest_comment.author.name}} 
       >{{ticket.latest_comment.created_at_with_time}}
@@ -136,7 +136,7 @@ The steps and specs are as follows:
 
 ## Set up config.py
 The following need to go in config.py
-- ADDR (IP that python script will run on)
+- ADDR (IP that python script will run on) <- SAME IP WE PUT FOR THE TWILIO TARGET
 - Twilio ACCOUNT_SID, AUTH_TOKEN, and phone number
 - Zendesk username, password, domain, and custom phone field (ID marked down earlier)
 

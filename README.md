@@ -32,3 +32,10 @@ The targets will be triggered when certain actions are taken in Zendesk ex. Make
 - Click 'Add Target'
 - Select 'URL Target'
 - Set fields as:
+  - Title: Twilio Notification
+  - URL: [IP FOR SERVER]
+  - Method: Get
+  - Attribute Name: Body
+  - No basic authentication
+
+You should be able to check this works by trying 'Test Target'

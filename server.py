@@ -16,7 +16,6 @@ from settings import *
 
 requests.packages.urllib3.disable_warnings()
 
-ADDR = '45.55.212.169' #45.55.212.169
 PORT = 8000
 
 def send_text(phone, message):

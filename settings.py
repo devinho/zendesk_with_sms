@@ -1,5 +1,7 @@
 #defne all in config.py
 
+ADDR = 'localhost'
+
 # twilio
 ACCOUNT_SID = "asdf" 
 AUTH_TOKEN = "asdf" 

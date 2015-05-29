@@ -136,7 +136,6 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     
         ticket_id = find_ticket(phone)
-        ticket_id = 66
         if ticket_id != -1:
             # if ticket already exists, append text to ticket
             update_ticket(ticket_id, body, phone)

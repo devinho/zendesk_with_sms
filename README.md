@@ -7,6 +7,8 @@ When we receive a text:
 
 Replies to that ticket from an agent would be received by sms by the customer (no email)
 
+To do this we will use Zendesk and Twilio
+
 How to configure Zendesk:
 
 ## 1. Create phone field ##
@@ -80,6 +82,7 @@ The steps and specs are as follows:
 
   ### Trigger 2  
   A comment has been made on your ticket and marked as solved
+  
   Note: Clone Trigger 1 and adjust
   - Title: Notify requester of comment from agent (solved)
   - Meet all of the following conditions:
@@ -122,5 +125,21 @@ The steps and specs are as follows:
         >{{ticket.latest_comment.created_at_with_time}}
 
         >To add comments to your ticket, send additional text messages
+
+
+How to set up python server:
+
+## Dependencies
+1. urlparse
+2. requests
+3. TwilioRestClient
+
+## Set up config.py
+The following need to go in config.py
+- ADDR (IP that python script will run on)
+- Twilio ACCOUNT_SID, AUTH_TOKEN, and phone number
+- Zendesk username, password, domain, and custom phone field (ID marked down earlier)
+
+``` python server.py ```
 
 

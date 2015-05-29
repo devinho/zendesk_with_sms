@@ -43,7 +43,7 @@ You should be able to check this works by trying 'Test Target'
 ## 3. Create Triggers ##
 We've created a target (send a text with twilio), now we need triggers
 
-We will send a text when:
+We will send a text when
 1. A comment has been made on your ticket
 2. An agent has been assigned to your ticket
 3. Your ticket has been marked as 'Solved'

@@ -39,3 +39,23 @@ The targets will be triggered when certain actions are taken in Zendesk ex. Make
   - No basic authentication
 
 You should be able to check this works by trying 'Test Target'
+
+## 3. Create Triggers ##
+We've created a target (send a text with twilio), now we need triggers
+
+We will send a text when:
+1. A comment has been made on your ticket
+2. An agent has been assigned to your ticket
+3. Your ticket has been marked as 'Solved'
+
+To do this we need 4 triggers (one for when a ticket is commented on and marked 'Solved' at the same time)
+The steps and specs are as follows:
+- Go to settings (bottom-left gear)
+- Go to 'Triggers'
+- Click 'Add Trigger'
+- Set fields as:
+  ### Trigger 1 ###
+  - test
+
+  ### Trigger 2 ###
+  -test

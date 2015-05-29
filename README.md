@@ -46,8 +46,11 @@ We've created a target (send a text with twilio), now we need triggers
 We will send a text when:
 
 1. A comment has been made on your ticket
-2. An agent has been assigned to your ticket
-3. Your ticket has been marked as 'Solved'
+2. A comment has been made on your ticket and marked as solved
+3. Your ticket has been marked as 'Solved' without comment
+4. An agent has been assigned to your ticket
+
+
 
 To do this we need 4 triggers (one for when a ticket is commented on and marked 'Solved' at the same time)
 The steps and specs are as follows:
@@ -57,6 +60,7 @@ The steps and specs are as follows:
 - Set fields as follows:
 
   ### Trigger 1 
+  A comment has been made on your ticket
   - Title: Notify requester of comment from agent (not solved)
   - Meet all of the following conditions:
     - Ticket: Is... / Updated
@@ -75,6 +79,7 @@ The steps and specs are as follows:
 	  >Reply to this text to respond to this comment
 
   ### Trigger 2  
+  A comment has been made on your ticket and marked as solved
   Note: Clone Trigger 1 and adjust
   - Title: Notify requester of comment from agent (solved)
   - Meet all of the following conditions:
@@ -93,19 +98,7 @@ The steps and specs are as follows:
 
 	  >The ticket has been solved. Sending another text will open a new ticket.
 
-  ### Trigger 3 
-    - Title: Notify requester that ticket has been assigned
-  	- Meet all of the following conditions:
-  	  - Ticket: Assignee / Changed
-  	- Perform these actions: 
-  	  - Notiications: Notify Target / Twilio Notification
-  	  - Message: 
-        >Your ticket has been assigned to {{ticket.assignee}}
-        >{{ticket.latest_comment.created_at_with_time}}
-
-        >To add comments to your ticket, send additional text messages
-
-  ### Trigger 4 
+  ### Trigger 3
     Ticket marked as 'Solved' but no comment
     - Title: Notify requester of solved ticket
     - Meet all of the following conditions:
@@ -117,4 +110,17 @@ The steps and specs are as follows:
   	    >{{ticket.updated_at_with_time}}
 
   	    >Sending another text will open a new ticket.
+
+  ### Trigger 4
+    - Title: Notify requester that ticket has been assigned
+  	- Meet all of the following conditions:
+  	  - Ticket: Assignee / Changed
+  	- Perform these actions: 
+  	  - Notiications: Notify Target / Twilio Notification
+  	  - Message: 
+        >Your ticket has been assigned to {{ticket.assignee}}
+        >{{ticket.latest_comment.created_at_with_time}}
+
+        >To add comments to your ticket, send additional text messages
+
 

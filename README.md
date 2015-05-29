@@ -97,8 +97,8 @@ The steps and specs are as follows:
   	- Meet all of the following conditions:
   	  -Ticket: Assignee / Changed
   	- Notiications: Notify Target / Twilio Notification
-  	  -Message: 
-  	    >Your ticket has been assigned to {{ticket.assignee}}
-  	    >{{ticket.latest_comment.created_at_with_time}}
+  	-Message: 
+      >Your ticket has been assigned to {{ticket.assignee}}
+      >{{ticket.latest_comment.created_at_with_time}}
 
-  	    >To add comments to your ticket, send additional text messages
+      >To add comments to your ticket, send additional text messages

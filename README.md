@@ -9,7 +9,13 @@ Replies to that ticket from an agent would be received by sms by the customer (n
 
 To do this we will use Zendesk and Twilio
 
-# How to configure Zendesk:
+# How to configure Twilio
+
+Create a new twilio number
+
+For the new number, set the request URL to the IP the python server will run on
+
+# How to configure Zendesk
 
 ## 1. Create phone field ##
 This field will hold customer's phone number
@@ -127,7 +133,7 @@ The steps and specs are as follows:
         >To add comments to your ticket, send additional text messages
 
 
-# How to set up python server:
+# How to set up python server
 
 ## Dependencies
 1. urlparse

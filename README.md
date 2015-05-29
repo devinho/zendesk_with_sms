@@ -54,8 +54,9 @@ The steps and specs are as follows:
 - Go to settings (bottom-left gear)
 - Go to 'Triggers'
 - Click 'Add Trigger'
-- Set fields as:
-  ### Trigger 1 ###
+- Set fields as follows:
+
+  ### Trigger 1 
   - Title: Notify requester of comment from agent (not solved)
   - Meet all of the following conditions:
     - Ticket: Is... / Updated
@@ -73,7 +74,7 @@ The steps and specs are as follows:
 
 	  >Reply to this text to respond to this comment
 
-  ### Trigger 2  ###
+  ### Trigger 2  
   Note: Clone Trigger 1 and adjust
   - Title: Notify requester of comment from agent (solved)
   - Meet all of the following conditions:
@@ -92,7 +93,7 @@ The steps and specs are as follows:
 
 	  >The ticket has been solved. Sending another text will open a new ticket.
 
-  ### Trigger 3 ###
+  ### Trigger 3 
     - Title: Notify requester that ticket has been assigned
   	- Meet all of the following conditions:
   	  - Ticket: Assignee / Changed
@@ -104,7 +105,7 @@ The steps and specs are as follows:
 
         >To add comments to your ticket, send additional text messages
 
-  ### Trigger 4 ### 
+  ### Trigger 4 
     Ticket marked as 'Solved' but no comment
     - Title: Notify requester of solved ticket
     - Meet all of the following conditions:

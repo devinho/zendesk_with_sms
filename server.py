@@ -23,12 +23,12 @@ def send_text(phone, message):
     # see settings.py
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
  
-    # send text message
-    # client.messages.create(
-    #     to = phone, 
-    #     from_ = twilio_phone,
-    #     body = message,
-    # )
+    send text message
+    client.messages.create(
+        to = phone, 
+        from_ = twilio_phone,
+        body = message,
+    )
 
 # create a zendesk ticket (called when text message is sent from a phone number that doesn't have an existing ticket) 
 # subject = body of ticket
@@ -136,6 +136,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     
         ticket_id = find_ticket(phone)
+        
         if ticket_id != -1:
             # if ticket already exists, append text to ticket
             update_ticket(ticket_id, body, phone)

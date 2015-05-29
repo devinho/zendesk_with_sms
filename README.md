@@ -95,10 +95,25 @@ The steps and specs are as follows:
   ### Trigger 3 ###
     - Title: Notify requester that ticket has been assigned
   	- Meet all of the following conditions:
-  	  -Ticket: Assignee / Changed
-  	- Notiications: Notify Target / Twilio Notification
-  	-Message: 
-      >Your ticket has been assigned to {{ticket.assignee}}
-      >{{ticket.latest_comment.created_at_with_time}}
+  	  - Ticket: Assignee / Changed
+  	- Perform these actions: 
+  	  - Notiications: Notify Target / Twilio Notification
+  	  - Message: 
+        >Your ticket has been assigned to {{ticket.assignee}}
+        >{{ticket.latest_comment.created_at_with_time}}
 
-      >To add comments to your ticket, send additional text messages
+        >To add comments to your ticket, send additional text messages
+
+  ### Trigger 4 ### 
+    Ticket marked as 'Solved' but no comment
+    - Title: Notify requester of solved ticket
+    - Meet all of the following conditions:
+  	  - Ticket: Status / Changed to / Solved
+  	- Perform these actions: 
+  	  - Notiications: Notify Target / Twilio Notification
+  	  - Message: 
+  	    >Your ticket has been solved by Agent {{ticket.assignee}}
+  	    >{{ticket.updated_at_with_time}}
+
+  	    >Sending another text will open a new ticket.
+

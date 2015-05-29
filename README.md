@@ -73,6 +73,32 @@ The steps and specs are as follows:
 
 	  >Reply to this text to respond to this comment
 
+  ### Trigger 2  ###
+  Note: Clone Trigger 1 and adjust
+  - Title: Notify requester of comment from agent (solved)
+  - Meet all of the following conditions:
+    - Ticket: Is... / Updated
+    - Ticket: Comment Is... / Present, and requester can see the comment
+    - Other: Current user / Is / (agent)
+    - Other: Current user / Is not / [admin that creates the tickets]
+    - Ticket: Status / Is / Solved
+  - Perform these actions: 
+    - Notifications: Notify Target / Twilio Notification (<- the target we just created!)
+    - Message :
+      >New comment from Agent {{ticket.latest_comment.author.name}} 
+      >{{ticket.latest_comment.created_at_with_time}}
 
-  ### Trigger 2 ###
-  - test
+	  >{{ticket.latest_comment}}
+
+	  >The ticket has been solved. Sending another text will open a new ticket.
+
+  ### Trigger 3 ###
+    - Title: Notify requester that ticket has been assigned
+  	- Meet all of the following conditions:
+  	  -Ticket: Assignee / Changed
+  	- Notiications: Notify Target / Twilio Notification
+  	  -Message: 
+  	    >Your ticket has been assigned to {{ticket.assignee}}
+  	    >{{ticket.latest_comment.created_at_with_time}}
+
+  	    >To add comments to your ticket, send additional text messages

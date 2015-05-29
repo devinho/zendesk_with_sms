@@ -55,7 +55,14 @@ The steps and specs are as follows:
 - Click 'Add Trigger'
 - Set fields as:
   ### Trigger 1 ###
-  - test
+  - Title: Notify requester of comment from agent (not solved)
+  - Meet all of the following conditions:
+    - Ticket: Is... / Updated
+    - Ticket: Comment Is... / Present, and requester can see the comment
+    - Other: Current user / Is / (agent)
+    - Other: Current user / Is not / [admin that creates the tickets]
+    - Ticket: Status / Is not / Solved
+
 
   ### Trigger 2 ###
-  -test
+  - test

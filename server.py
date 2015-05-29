@@ -5,6 +5,8 @@ import requests
 from twilio.rest import TwilioRestClient 
 import os
 
+from settings import *
+
 # future work/things to consider:
 # 1. notififying user of comment on their ticket needs work 
 # 2. how to incorporate name of user?
@@ -13,31 +15,20 @@ import os
 
 requests.packages.urllib3.disable_warnings()
 
-ADDR = '45.55.212.169' #45.55.212.169
+ADDR = 'localhost' #45.55.212.169
 PORT = 8000
-
-# zendesk login credentials
-user = os.getenv('email')
-pwd = os.getenv('pass')
-zendesk_url = 'https://curbsidehelp.zendesk.com'
-phone_field_id = 25897847  # field id for custom field in zen desk
 
 def send_text(phone, message):
 
-    # twilio authentication 
-
-    ACCOUNT_SID = "AC259e229cc7f22e3922ba82ae2fff1232" 
-    AUTH_TOKEN = "58c17f647492900c6a9701739387ee5c" 
-    twilio_phone = '+16504698204'
-
+    # see settings.py
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
  
     # send text message
-    client.messages.create(
-        to = phone, 
-        from_ = twilio_phone,
-        body = message,
-    )
+    # client.messages.create(
+    #     to = phone, 
+    #     from_ = twilio_phone,
+    #     body = message,
+    # )
 
 # create a zendesk ticket (called when text message is sent from a phone number that doesn't have an existing ticket) 
 # subject = body of ticket
@@ -54,6 +45,7 @@ def create_ticket(subject, phone):
 
     headers = {'content-type': 'application/json'}
     
+    # see settings.py
     r = requests.post(url, data=payload, auth=(user,pwd), headers=headers)
 
     # if for some reason posting new ticket to zendesk does not work
@@ -83,6 +75,7 @@ def update_ticket(ticket, comment, phone):
         send_text(phone, 'We could not find your ticket.') # This should never happen (ticket is created if ticket not found)
     else:
         data = {'ticket': {'comment': {'body': comment}}}
+
         payload = json.dumps(data)
         r2 = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
         if r2.status_code != 200:
@@ -112,6 +105,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         #work around for sending text when comment is posted to existing ticket
         q = urlparse.parse_qs(urlparse.urlparse(s.path).query)
 
+        if (q['to'][0] == ''):
+            print 'No phone'
+
         send_text(q['to'][0],'\n' + q['Body'][0] + '\n')
 
         s.send_response(200)
@@ -129,7 +125,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         s.send_header('Content-type', 'text/html')
         s.end_headers()
 
-        s.wfile.write('<body> <p>Success</p> </body>')
+        
 
 
         # 'Body' and 'From' are required to create/update a ticket
@@ -138,7 +134,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     
         ticket_id = find_ticket(phone)
-
+        ticket_id = 66
         if ticket_id != -1:
             # if ticket already exists, append text to ticket
             update_ticket(ticket_id, body, phone)
@@ -146,6 +142,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             # if ticket does not exist, create a new ticket
             create_ticket(body, phone)
 
+        s.wfile.write('<body> <p>Success</p> </body>')
 
         # OLD MENU SYSTEM
 

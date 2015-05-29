@@ -65,7 +65,7 @@ The steps and specs are as follows:
   - Perform these actions: 
     - Notifications: Notify Target / Twilio Notification (<- the target we just created!)
     - Message :
-    - ```New comment from Agent {{ticket.latest_comment.author.name}} 
+    ```New comment from Agent {{ticket.latest_comment.author.name}} 
 		{{ticket.latest_comment.created_at_with_time}}
 
 		{{ticket.latest_comment}}

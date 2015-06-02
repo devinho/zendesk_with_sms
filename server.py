@@ -94,7 +94,7 @@ def find_ticket(phone):
     headers = {'Accept':'application/json'}
     r = requests.get(url, auth=(user,pwd), headers=headers)
     for ticket in r.json()['tickets']:
-        if ticket['status'] != 'solved' and ticket['custom_fields'][0]['value'] == phone:
+        if ticket['status'] != 'solved' and ticket['status'] != 'closed' and ticket['custom_fields'][0]['value'] == phone:
             ticket_id = ticket['id']
 
     return ticket_id

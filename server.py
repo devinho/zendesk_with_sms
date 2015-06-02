@@ -79,7 +79,7 @@ def update_ticket(ticket, comment, phone):
         payload = json.dumps(data)
         r2 = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
         if r2.status_code != 200:
-            print('Status:', response.status_code, 'Problem with the request.')
+            print('Status:', r2.status_code, 'Problem with the request.')
             send_text(phone, 'We could not add your comment to ticket ('+ str(ticket) +').')
         else:
             print('Successfully added comment to ticket')

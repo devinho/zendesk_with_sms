@@ -56,7 +56,7 @@ def create_ticket(subject, phone):
     else:
         ticket_id = r.json()['ticket']['id']
         print('Successfully created the ticket.')
-        send_text(phone, 'A new ticket has been created (id = ' + str(ticket_id) + '). To add a comment, send another text message.');
+        # send_text(phone, 'A new ticket has been created (id = ' + str(ticket_id) + '). To add a comment, send another text message.');
         return ticket_id
 
 # update an existing zendesk ticket (text message is received from a number that already has an existing ticket open)
@@ -70,20 +70,16 @@ def update_ticket(ticket, comment, phone):
     headers = {'content-type': 'application/json'}
     # r = requests.get(url, auth=(user,pwd))
     
-    # if r.status_code != 200:
-    #     print ('Ticket not found')
-    #     send_text(phone, 'We could not find your ticket.') # This should never happen (ticket is created if ticket not found)
-    # else:
     data = {'ticket': {'comment': {'body': comment}}}
 
     payload = json.dumps(data)
-    r2 = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
-    if r2.status_code != 200:
-        print('Status:', r2.status_code, 'Problem with the request.')
+    r = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
+    if r.status_code != 200:
+        print('Status:', r.status_code, 'Problem with the request.')
         send_text(phone, 'We could not add your comment to ticket ('+ str(ticket) +').')
     else:
         print('Successfully added comment to ticket')
-        send_text(phone, 'Your ticket (id = '+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
+        # send_text(phone, 'Your ticket (id = '+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
 
 # return ticket id for given phone number. if it doesn't exist return -1
 # phone = phone number to search a ticket for
@@ -110,7 +106,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         except KeyError:
             print 'No text. No phone numer detected'
         else:
-	    send_text(q['to'][0],'\n' + q['Body'][0] + '\n')
+	       send_text(q['to'][0],'\n' + q['Body'][0] + '\n')
 
         s.send_response(200)
         s.send_header('Content-type', 'text/html')

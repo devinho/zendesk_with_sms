@@ -56,7 +56,7 @@ def create_ticket(subject, phone):
     else:
         ticket_id = r.json()['ticket']['id']
         print('Successfully created the ticket.')
-        send_text(phone, 'A new ticket has been created (id = ' + str(ticket_id) + '). To add a comment, just send another text message.');
+        send_text(phone, 'A new ticket has been created (id = ' + str(ticket_id) + '). To add a comment, send another text message.');
         return ticket_id
 
 # update an existing zendesk ticket (text message is received from a number that already has an existing ticket open)
@@ -68,12 +68,12 @@ def update_ticket(ticket, comment, phone):
     url = zendesk_url + '/api/v2/tickets/' + str(ticket) + '.json'
 
     headers = {'content-type': 'application/json'}
-    r = requests.get(url, auth=(user,pwd))
+    # r = requests.get(url, auth=(user,pwd))
     
-    if r.status_code != 200:
-        print ('Ticket not found')
-        send_text(phone, 'We could not find your ticket.') # This should never happen (ticket is created if ticket not found)
-    else:
+    # if r.status_code != 200:
+    #     print ('Ticket not found')
+    #     send_text(phone, 'We could not find your ticket.') # This should never happen (ticket is created if ticket not found)
+    # else:
         data = {'ticket': {'comment': {'body': comment}}}
 
         payload = json.dumps(data)

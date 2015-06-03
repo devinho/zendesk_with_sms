@@ -74,16 +74,16 @@ def update_ticket(ticket, comment, phone):
     #     print ('Ticket not found')
     #     send_text(phone, 'We could not find your ticket.') # This should never happen (ticket is created if ticket not found)
     # else:
-        data = {'ticket': {'comment': {'body': comment}}}
+    data = {'ticket': {'comment': {'body': comment}}}
 
-        payload = json.dumps(data)
-        r2 = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
-        if r2.status_code != 200:
-            print('Status:', r2.status_code, 'Problem with the request.')
-            send_text(phone, 'We could not add your comment to ticket ('+ str(ticket) +').')
-        else:
-            print('Successfully added comment to ticket')
-            send_text(phone, 'Your ticket (id = '+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
+    payload = json.dumps(data)
+    r2 = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
+    if r2.status_code != 200:
+        print('Status:', r2.status_code, 'Problem with the request.')
+        send_text(phone, 'We could not add your comment to ticket ('+ str(ticket) +').')
+    else:
+        print('Successfully added comment to ticket')
+        send_text(phone, 'Your ticket (id = '+ str(ticket) +') has been updated. We\'ll get to it as soon as we can.')
 
 # return ticket id for given phone number. if it doesn't exist return -1
 # phone = phone number to search a ticket for

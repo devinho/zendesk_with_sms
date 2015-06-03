@@ -76,6 +76,7 @@ def update_ticket(ticket, comment, phone):
     r = requests.put(url, data=payload, headers=headers, auth=(user,pwd))
     if r.status_code != 200:
         print('Status:', r.status_code, 'Problem with the request.')
+        print (r.text)
         send_text(phone, 'We could not add your comment to ticket ('+ str(ticket) +').')
     else:
         print('Successfully added comment to ticket')
@@ -135,6 +136,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         if ticket_id != -1:
             # if ticket already exists, append text to ticket
+
             update_ticket(ticket_id, body, phone)
         else:
             # if ticket does not exist, create a new ticket

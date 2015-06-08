@@ -69,7 +69,7 @@ The steps and specs are as follows:
 - Click 'Add Trigger'
 - Set fields as follows:
 
-  ### Trigger 1 
+### Trigger 1 
   A comment has been made on your ticket
   - Title: Notify requester of all comments
 
@@ -80,7 +80,6 @@ The steps and specs are as follows:
     - Notifications: Notify Target / Twilio Notification <- the target we just created!
     - Message :
 	   >{{ticket.latest_comment}}
-
 
 # How to set up python server
 

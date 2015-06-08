@@ -7,6 +7,8 @@ When we receive a text:
 
 Replies to that ticket from an agent would be received by sms by the customer (no email)
 
+Opening a ticket and leaving comments to a ticket will look like a regular conversation with a user
+
 To do this we will use Zendesk and Twilio
 
 # How to configure Twilio
@@ -69,68 +71,15 @@ The steps and specs are as follows:
 
   ### Trigger 1 
   A comment has been made on your ticket
-  - Title: Notify requester of comment from agent (not solved)
-  - Meet all of the following conditions:
-    - Ticket: Is... / Updated
-    - Ticket: Comment Is... / Present, and requester can see the comment
+  - Title: Notify requester of all comments
+
+    - Ticket: Comment Is... / Public
     - Other: Current user / Is / (agent)
-    - Other: Current user / Is not / [admin that creates the tickets]
-    - Ticket: Status / Is not / Solved
+
   - Perform these actions: 
     - Notifications: Notify Target / Twilio Notification <- the target we just created!
     - Message :
-      >New comment from Agent {{ticket.latest_comment.author.name}} 
-      >{{ticket.latest_comment.created_at_with_time}}
-
-	  >{{ticket.latest_comment}}
-
-	  >Reply to this text to respond to this comment
-
-  ### Trigger 2  
-  A comment has been made on your ticket and marked as solved
-  
-  Note: Clone Trigger 1 and adjust
-  - Title: Notify requester of comment from agent (solved)
-  - Meet all of the following conditions:
-    - Ticket: Is... / Updated
-    - Ticket: Comment Is... / Present, and requester can see the comment
-    - Other: Current user / Is / (agent)
-    - Other: Current user / Is not / [admin that creates the tickets]
-    - Ticket: Status / Is / Solved
-  - Perform these actions: 
-    - Notifications: Notify Target / Twilio Notification (<- the target we just created!)
-    - Message :
-      >New comment from Agent {{ticket.latest_comment.author.name}} 
-      >{{ticket.latest_comment.created_at_with_time}}
-
-	  >{{ticket.latest_comment}}
-
-	  >The ticket has been solved. Sending another text will open a new ticket.
-
-  ### Trigger 3
-    Ticket marked as 'Solved' but no comment
-    - Title: Notify requester of solved ticket
-    - Meet all of the following conditions:
-  	  - Ticket: Status / Changed to / Solved
-  	- Perform these actions: 
-  	  - Notiications: Notify Target / Twilio Notification
-  	  - Message: 
-  	    >Your ticket has been solved by Agent {{ticket.assignee}}
-  	    >{{ticket.updated_at_with_time}}
-
-  	    >Sending another text will open a new ticket.
-
-  ### Trigger 4
-    - Title: Notify requester that ticket has been assigned
-  	- Meet all of the following conditions:
-  	  - Ticket: Assignee / Changed
-  	- Perform these actions: 
-  	  - Notiications: Notify Target / Twilio Notification
-  	  - Message: 
-        >Your ticket has been assigned to {{ticket.assignee}}
-        >{{ticket.latest_comment.created_at_with_time}}
-
-        >To add comments to your ticket, send additional text messages
+	   >{{ticket.latest_comment}}
 
 
 # How to set up python server

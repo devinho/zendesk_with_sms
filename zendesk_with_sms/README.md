@@ -1,4 +1,4 @@
-# SMS with Zendesk 
+# Zendesk with SMS
 
 When we receive a text:
 - search for a ticket for that phone number

@@ -51,15 +51,9 @@ The targets will be triggered when certain actions are taken in Zendesk ex. Make
 You should be able to check this works by trying 'Test Target'
 
 ## 3. Create Triggers ##
-We've created a target (send a text with twilio), now we need triggers
+We've created a target (send a text with twilio), now we need a trigger 
 
-We will send a text when:
-
-1. A comment has been made on your ticket
-2. A comment has been made on your ticket and marked as solved
-3. Your ticket has been marked as 'Solved' without comment
-4. An agent has been assigned to your ticket
-
+This trigger will get called everytime a comment is made on a ticket 
 
 
 To do this we need 4 triggers (one for when a ticket is commented on and marked 'Solved' at the same time)
@@ -98,7 +92,7 @@ The following need to go in config.py
 
 Misc notes:
 
-- In Zendesk, the tickets will be created under the user the login credentials are for. This user only be used for creating tickets and assigning them. Only agents assigned to tickets can comment on them.
+- In Zendesk, the tickets will be created under the user the login credentials are for. This user only be used for creating tickets and assigning them. Only agents assigned to tickets shouldang comment on them.
 - If you are using a trial Twilio account, you can only send texts to approved numbers.
 
 

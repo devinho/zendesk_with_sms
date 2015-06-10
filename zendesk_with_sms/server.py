@@ -7,13 +7,6 @@ import os
 
 from settings import *
 
-# future work/things to consider:
-# 1. notififying user of comment on their ticket needs work 
-# 2. how to incorporate name of user?
-# 3. would the menu system be better?
-# 4. are ticket statuses needed (open, pending, closed)?
-
-
 requests.packages.urllib3.disable_warnings()
 
 PORT = 8000
@@ -124,8 +117,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         s.send_header('Content-type', 'text/html')
         s.end_headers()
 
-        
-
 
         # 'Body' and 'From' are required to create/update a ticket
         body = ''.join(post_data['Body'][0]).encode('ascii', 'ignore')
@@ -143,28 +134,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             create_ticket(body, phone)
 
         s.wfile.write('<body> <p>Success</p> </body>')
-
-        # OLD MENU SYSTEM
-
-        # position = body.find(' ')
-
-        # if position == -1:
-        #     command = body
-        #     remainder = ''
-        # else:
-        #     command = body[0:position]
-        #     remainder = body[position+1:len(body)]
-
-        # if command == 'menu':
-        #     message = '\nThe available commands are:\nnew - create a new ticket\n[id] - update this ticket ID\nmenu - show this menu\n'
-        #     send_text(phone, message)
-        # elif command == 'new':
-        #     ticket = create_ticket(remainder, phone)
-        # elif command.isdigit():
-        #     update_ticket(command, remainder, phone)
-        # else:
-        #     message = 'Hello and thanks for the message. Unfortunately I did not quite understand what you needed. Try sending the word "menu" for the list of commands.\n'
-        #     send_text(phone, message)
 
 
 httpd = HTTPServer((ADDR, PORT), RequestHandler)

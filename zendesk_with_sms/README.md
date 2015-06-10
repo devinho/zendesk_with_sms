@@ -35,7 +35,7 @@ The last thing that needs to be done is to get the field id for our custome fiel
 
 
 ## 2. Create Targets ##
-The targets will be triggered when certain actions are taken in Zendesk ex. Make an API call when a comment is made
+The targets will be triggered when certain actions are taken in Zendesk (ex. make an API call when a comment is made)
 
 - Go to settings (bottom-left gear)
 - Go to 'Extensions'
@@ -48,15 +48,13 @@ The targets will be triggered when certain actions are taken in Zendesk ex. Make
   - Attribute Name: Body
   - No basic authentication
 
-You should be able to check this works by trying 'Test Target'
+You should be able to check this works by trying 'Test Target' (python server needs to be running)
 
 ## 3. Create Triggers ##
 We've created a target (send a text with twilio), now we need a trigger 
 
 This trigger will get called everytime a comment is made on a ticket 
 
-
-To do this we need 4 triggers (one for when a ticket is commented on and marked 'Solved' at the same time)
 The steps and specs are as follows:
 - Go to settings (bottom-left gear)
 - Go to 'Triggers'
@@ -84,7 +82,7 @@ The steps and specs are as follows:
 
 ## Set up config.py
 The following need to go in config.py
-- ADDR (IP that python script will run on) <- SAME IP WE PUT FOR THE TWILIO TARGET
+- port (optional) and ADDR (IP that python script will run on) <- SAME IP WE PUT FOR THE TWILIO TARGET
 - Twilio ACCOUNT_SID, AUTH_TOKEN, and phone number
 - Zendesk username, password, domain, and custom phone field (ID marked down earlier)
 

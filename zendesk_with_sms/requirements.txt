@@ -1,0 +1,2 @@
+requests==2.5.1
+twilio==4.4.0

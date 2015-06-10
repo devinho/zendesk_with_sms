@@ -75,11 +75,6 @@ The steps and specs are as follows:
 
 # How to set up python server
 
-## Dependencies
-1. urlparse
-2. requests
-3. TwilioRestClient
-
 ## Set up config.py
 The following need to go in config.py
 - port (optional) and ADDR (IP that python script will run on) <- SAME IP WE PUT FOR THE TWILIO TARGET

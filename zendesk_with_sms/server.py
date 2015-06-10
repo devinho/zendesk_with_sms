@@ -9,8 +9,6 @@ from settings import *
 
 requests.packages.urllib3.disable_warnings()
 
-PORT = 8000
-
 def send_text(phone, message):
 
     # see settings.py

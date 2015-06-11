@@ -1,13 +1,13 @@
-from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
-import urlparse
+#from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+import webapp2
+
 import json
 import requests
 from twilio.rest import TwilioRestClient 
-import os
 
 from settings import *
 
-requests.packages.urllib3.disable_warnings()
+# requests.packages.urllib3.disable_warnings()
 
 def send_text(phone, message):
 
@@ -88,33 +88,30 @@ def find_ticket(phone):
     return ticket_id
 
 
-class RequestHandler(BaseHTTPRequestHandler):   
-    def do_GET(s):
+class RequestHandler(webapp2.RequestHandler):   
+    def get(s):
         #work around for sending text when comment is posted to existing ticket
-        q = urlparse.parse_qs(urlparse.urlparse(s.path).query)
 
-        try:
-            q['to'][0]
-        except KeyError:
-            print 'No text. No phone numer detected'
-        else:
-	       send_text(q['to'][0],'\n' + q['Body'][0] + '\n')
+        print s.request.get('to')
 
-        s.send_response(200)
-        s.send_header('Content-type', 'text/html')
-        s.end_headers()
-        s.wfile.write('<body><p>Success</p></body>')
+        if (s.request.get('to') is ''):
+           # No phone number detected
+            pass 
+        else: 
+            send_text(s.request.get('to'),'\n' + s.request.get('to') + '\n')
 
-    def do_POST(s):
+        s.response.headers['Content-type'] = 'text/html'
+
+        s.response.write('<body><p>Success</p></body>')
+
+    def post(s):
 
     	length = int(s.headers['Content-Length'])
     	post_data = urlparse.parse_qs(s.rfile.read(length).decode('utf-8'))
 
 
-    	s.send_response(200)
-        s.send_header('Content-type', 'text/html')
-        s.end_headers()
-
+    	# s.send_response(200)
+        s.response.headers['Content-type'] = 'text/html'
 
         # 'Body' and 'From' are required to create/update a ticket
         body = ''.join(post_data['Body'][0]).encode('ascii', 'ignore')
@@ -131,8 +128,12 @@ class RequestHandler(BaseHTTPRequestHandler):
             # if ticket does not exist, create a new ticket
             create_ticket(body, phone)
 
-        s.wfile.write('<body> <p>Success</p> </body>')
+        s.response.write('<body> <p>Success</p> </body>')
 
 
-httpd = HTTPServer((ADDR, PORT), RequestHandler)
-httpd.serve_forever()
+# httpd = HTTPServer((ADDR, PORT), RequestHandler)
+# httpd.serve_forever()
+
+app = webapp2.WSGIApplication([
+    ('/', RequestHandler),
+], debug=True)

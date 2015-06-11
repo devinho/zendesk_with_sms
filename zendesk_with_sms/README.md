@@ -15,7 +15,7 @@ To do this we will use Zendesk and Twilio
 
 Create a new twilio number
 
-For the new number, set the request URL to the IP the python server will run on
+Leave everything as is. We will finish this once we deploy our app.
 
 # How to configure Zendesk
 
@@ -43,9 +43,9 @@ The targets will be triggered when certain actions are taken in Zendesk (ex. mak
 - Select 'URL Target'
 - Set fields as:
   - Title: Twilio Notification
-  - URL: [IP FOR SERVER]
+  - URL: (set a placeholder url for now. we will add later)
   - Method: Get
-  - Attribute Name: Body
+  - Attribute Name: body
   - No basic authentication
 
 You should be able to check this works by trying 'Test Target' (python server needs to be running)
@@ -73,7 +73,8 @@ The steps and specs are as follows:
     - Message :
 	   >{{ticket.latest_comment}}
 
-# How to set up python server
+# How to set up python server 
+Note: Used Python 2.7.9
 
 ```
 git clone https://github.com/devinho/curbside.git
@@ -81,19 +82,17 @@ git clone https://github.com/devinho/curbside.git
 
 ## 1. Set up Google App Engine
 
-Follow instructions at:
+To download App Engine, follow instructions at:
 
 https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction
 
-Follow the download instructions and add zendesk_with_sms as an existing application by doing
-File -> Add Existing Application -> zendesk_with_sms
+Once downloaded, open App Engine and add zendesk_with_sms as an existing application by doing:
+File -> Add Existing Application -> browse -> path/to/curbside/zendesk_with_sms -> add
+
 
 ```
 cd zendesk_with_sms
 pip install -t lib -r requirements.txt
-cd ..
-dev_appserver.py zendesk_with_sms/
-
 ```
 
 
@@ -111,8 +110,38 @@ zendesk_url = '[your zendesk domain]'
 phone_field_id  = '[your custom field id]'
 ```
 
+## 3. Run app
 
-``` python server.py ```
+```
+cd ..
+dev_appserver.py zendesk_with_sms/
+```
+(Need to be in parent ../curbside not ../curbside/zendesk_with_sms) 
+
+## 4. Deployment to App Engine and Final Twilio/Zendesk config
+
+Follow instructions at:
+
+https://cloud.google.com/appengine/docs/python/gettingstartedpython27/uploading
+
+Once your app is deployed, make sure it works at:
+
+http://your-app-id.appspot.com/
+
+### Final Twilio Config
+
+Now we need to configure Twilio and Zendesk so it points at this URL.
+
+For Twilio head to the number you created and set the Request URL for SMS & MMS to your app engine URL.
+
+
+### Final Zenesk Config
+
+Head to Zendesk Target we created. Now instead of the placeholder from before, put:
+
+http://your-app-id.appspot.com/?to={{ticket.ticket_field_[YOUR_PHONE_TICKET_FIELD]}}
+
+
 
 Misc notes:
 

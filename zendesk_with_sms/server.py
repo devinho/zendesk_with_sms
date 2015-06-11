@@ -98,7 +98,8 @@ class RequestHandler(webapp2.RequestHandler):
            # No phone number detected
             pass 
         else: 
-            send_text(s.request.get('to'),'\n' + s.request.get('to') + '\n')
+            print s.request.get('body')
+            send_text(s.request.get('to'),'\n' + s.request.get('body') + '\n')
 
         s.response.headers['Content-type'] = 'text/html'
 

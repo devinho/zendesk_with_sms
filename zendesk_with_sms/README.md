@@ -35,7 +35,7 @@ The last thing that needs to be done is to get the field id for our custome fiel
 
 
 ## 2. Create Targets ##
-The targets will be triggered when certain actions are taken in Zendesk (ex. make an API call when a comment is made)
+The target will be triggered when certain actions are taken in Zendesk (ex. make an API call when a comment is made)
 
 - Go to settings (bottom-left gear)
 - Go to 'Extensions'
@@ -45,10 +45,10 @@ The targets will be triggered when certain actions are taken in Zendesk (ex. mak
   - Title: Twilio Notification
   - URL: (set a placeholder url for now. we will add later)
   - Method: Get
-  - Attribute Name: body
+  - Attribute Name: Body
   - No basic authentication
 
-You should be able to check this works by trying 'Test Target' (python server needs to be running)
+You can check this works later once we add the URL after deploying on App Engine
 
 ## 3. Create Triggers ##
 We've created a target (send a text with twilio), now we need a trigger 
@@ -80,7 +80,26 @@ Note: Used Python 2.7.9
 git clone https://github.com/devinho/curbside.git
 ```
 
-## 1. Set up Google App Engine
+
+## 1. Create config.py:
+
+Create and add config.py to the zendesk_with_sms folder. It should look like:
+
+```
+# Twilio 
+ACCOUNT_SID = '[your account_sid]'
+AUTH_TOKEN = '[your auth_token]'
+twilio_phone = '[your twilio phone number]'
+
+# Zendesk 
+user = '[your zendesk username]'
+pwd = '[your zendesk password]'
+zendesk_url = '[your zendesk domain]'
+phone_field_id  = '[your custom field id]'
+```
+
+
+## 2. Set up Google App Engine
 
 To download App Engine, follow instructions at:
 
@@ -97,23 +116,6 @@ cd zendesk_with_sms
 pip install -t lib -r requirements.txt
 ```
 
-
-## 2. Create config.py:
-
-Create and add config.py to the zendesk_with_sms folder. It should look like:
-
-```
-# Twilio 
-ACCOUNT_SID = '[your account_sid]'
-AUTH_TOKEN = '[your auth_token]'
-twilio_phone = '[your twilio phone number]'
-
-# Zendesk 
-user = '[your zendesk username]'
-pwd = '[your zendesk password]'
-zendesk_url = '[your zendesk domain]'
-phone_field_id  = '[your custom field id]'
-```
 
 ## 3. Run app
 
@@ -146,7 +148,9 @@ Head to Zendesk Target we created. Now instead of the placeholder from before, p
 
 http://your-app-id.appspot.com/?to={{ticket.ticket_field_[YOUR_PHONE_TICKET_FIELD]}}
 
+# Testing
 
+...
 
 Misc notes:
 

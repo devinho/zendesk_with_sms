@@ -4,6 +4,7 @@ import webapp2
 import json
 import requests
 from twilio.rest import TwilioRestClient 
+import os
 
 from settings import *
 
@@ -80,6 +81,7 @@ def find_ticket(phone):
     ticket_id = -1
     url = zendesk_url + '/api/v2/tickets.json'
     headers = {'Accept':'application/json'}
+
     r = requests.get(url, auth=(user,pwd), headers=headers)
     for ticket in r.json()['tickets']:
         if ticket['status'] != 'solved' and ticket['status'] != 'closed' and ticket['custom_fields'][0]['value'] == phone:
@@ -98,32 +100,28 @@ class RequestHandler(webapp2.RequestHandler):
            # No phone number detected
             pass 
         else: 
-            print s.request.get('body')
+            print s.request.get('Body')
             send_text(s.request.get('to'),'\n' + s.request.get('body') + '\n')
 
         s.response.headers['Content-type'] = 'text/html'
 
-        s.response.write('<body><p>Success</p></body>')
+        s.response.write('<body><p>Success!</p></body>')
 
     def post(s):
-
-    	length = int(s.headers['Content-Length'])
-    	post_data = urlparse.parse_qs(s.rfile.read(length).decode('utf-8'))
-
-
     	# s.send_response(200)
         s.response.headers['Content-type'] = 'text/html'
 
         # 'Body' and 'From' are required to create/update a ticket
-        body = ''.join(post_data['Body'][0]).encode('ascii', 'ignore')
-        phone = ''.join(post_data['From'][0]).encode('ascii', 'ignore')
+        # print s.request.get('Body')
+
+        body = s.request.POST['Body']
+        phone = s.request.POST['From']
 
     
         ticket_id = find_ticket(phone)
 
         if ticket_id != -1:
             # if ticket already exists, append text to ticket
-
             update_ticket(ticket_id, body, phone)
         else:
             # if ticket does not exist, create a new ticket

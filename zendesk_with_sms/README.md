@@ -91,6 +91,7 @@ File -> Add Existing Application -> browse -> path/to/curbside/zendesk_with_sms 
 
 
 ```
+cd curbside
 cd zendesk_with_sms
 pip install -t lib -r requirements.txt
 ```

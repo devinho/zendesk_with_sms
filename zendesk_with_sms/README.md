@@ -89,6 +89,7 @@ https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introducti
 Once downloaded, open App Engine and add zendesk_with_sms as an existing application by doing:
 File -> Add Existing Application -> browse -> path/to/curbside/zendesk_with_sms -> add
 
+Then run:
 
 ```
 cd curbside
@@ -98,6 +99,9 @@ pip install -t lib -r requirements.txt
 
 
 ## 2. Create config.py:
+
+Create and add config.py to the zendesk_with_sms folder. It should look like:
+
 ```
 # Twilio 
 ACCOUNT_SID = '[your account_sid]'

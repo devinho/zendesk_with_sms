@@ -75,15 +75,24 @@ The steps and specs are as follows:
 
 # How to set up python server
 
-```git clone https://github.com/devinho/curbside.git```
-```cd zendesk_with_sms```
-```pip install -t lib -r requirements.txt```
+```git clone https://github.com/devinho/curbside.git
+cd zendesk_with_sms
+pip install -t lib -r requirements.txt```
 
 
-## Set up config.py
-Create config.py and add the following:
-- Twilio ACCOUNT_SID, AUTH_TOKEN, and phone number
-- Zendesk username, password, domain, and custom phone field (ID marked down earlier)
+Create config.py:
+```
+# Twilio 
+ACCOUNT_SID = '[your account_sid]'
+AUTH_TOKEN = '[your auth_token]'
+twilio_phone = '[your twilio phone number]'
+
+#Zendesk 
+user = '[your zendesk username]'
+pwd = '[your zendesk password]'
+zendesk_url = '[your zendesk domain]'
+phone_field_id  = '[your custom field id]'
+```
 
 ## Set up Google App Engine
 

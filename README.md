@@ -156,6 +156,7 @@ Misc notes:
 
 - In Zendesk, the tickets will be created under the user the login credentials are for. This user only be used for creating tickets and assigning them. Only agents assigned to tickets should comment on them.
 - If you are using a trial Twilio account, you can only send texts to approved numbers.
+- Only an admin account in Zendesk can create tickets. Make sure your Zendesk credentials are for an admin account
 
 
 

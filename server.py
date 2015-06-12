@@ -14,6 +14,8 @@ def send_text(phone, message):
 
     # see settings.py
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN) 
+
+    message = message.replace('Curbside Team', '')
  
     # send text message
     client.messages.create(
@@ -79,13 +81,16 @@ def update_ticket(ticket, comment, phone):
 
 def find_ticket(phone):
     ticket_id = -1
-    url = zendesk_url + '/api/v2/tickets.json'
+    url = zendesk_url + '/api/v2/search.json?query=via:api status<solved requester:barbara@shopcurbside.com type:ticket'
     headers = {'Accept':'application/json'}
 
     r = requests.get(url, auth=(user,pwd), headers=headers)
-    for ticket in r.json()['tickets']:
-        if ticket['status'] != 'solved' and ticket['status'] != 'closed' and ticket['custom_fields'][0]['value'] == phone:
-            ticket_id = ticket['id']
+    #print r.json()['results']
+    for ticket in r.json()['results']:
+        if ticket['status'] != 'solved' and ticket['status'] != 'closed':
+            for field in ticket['custom_fields']:
+                if(field['value'] == phone):
+                    ticket_id = ticket['id']
 
     return ticket_id
 
@@ -94,14 +99,11 @@ class RequestHandler(webapp2.RequestHandler):
     def get(s):
         #work around for sending text when comment is posted to existing ticket
 
-        print s.request.get('to')
-
         if (s.request.get('to') is ''):
            # No phone number detected
             pass 
         else: 
-            print s.request.get('Body')
-            send_text(s.request.get('to'),'\n' + s.request.get('body') + '\n')
+            send_text(s.request.get('to'),'\n' + s.request.get('Body') + '\n')
 
         s.response.headers['Content-type'] = 'text/html'
 
